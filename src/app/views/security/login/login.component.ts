@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         this.loginInvalid = false;
         this.setToken(res.data);
+        this.authService.setUser(res.data);
         this.authService.setIsLogged(true);
         console.log(res.data);
       },

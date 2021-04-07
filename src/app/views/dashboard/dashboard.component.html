@@ -1,1 +1,60 @@
-<p>dashboard works!</p>
+<div class="main-div">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="requestForm" (ngSubmit)="newRequest()">
+        <h2>{{Role}}</h2>
+
+        <mat-form-field>
+          <mat-label>Course</mat-label>
+          <mat-select [(value)]="courseId" required>
+            <mat-option *ngFor="let course of courses" [value]="course.id">{{course.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="text" placeholder="Course" aria-label="Course" [formControl]="jsonControl" [matAutocomplete]="auto" [(ngModel)]="courseId" matInput>
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let course of filteredCourses | async" [value]="course.name">{{course.name}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="text" placeholder="Topic" aria-label="Topic" formControlName="topic" matInput required>
+          <mat-error>Please provide a valid topic</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Date</mat-label>
+          <input type="text" aria-label="Date" formControlName="start_at" [matDatepicker]="startDate" matInput required>
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Time Start</mat-label>
+          <input type="time" aria-label="Time" formControlName="start_time" matInput required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Hours</mat-label>
+          <mat-select formControlName="end_at" [(value)]="hourValue" required>
+            <mat-option *ngFor="let hour of hours" [value]="hour.values">{{hour.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <ng-container *ngIf="isEditMode; else elseTemplate">
+          <button mat-button color="primary">Update</button>
+          <button mat-button color="warn">Cancel</button>
+        </ng-container>
+
+        <ng-template #elseTemplate>
+          <button mat-button color="primary">Send</button>
+        </ng-template>
+
+      </form>
+    </mat-card-content>
+    <mat-card-content>
+      <h3>Class Finished: {{this.requestForm.value.end_at}}</h3>
+    </mat-card-content>
+  </mat-card>
+</div>

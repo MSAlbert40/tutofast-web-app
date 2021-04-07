@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import { LoginComponent } from './views/security/login/login.component';
 import { SignupComponent } from './views/security/signup/signup.component';
@@ -13,9 +13,12 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {MatOptionModule} from '@angular/material/core';
+import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {HeadersInterceptor} from './interceptor/headers.interceptor';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -37,9 +40,16 @@ import {MatMenuModule} from '@angular/material/menu';
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HeadersInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
