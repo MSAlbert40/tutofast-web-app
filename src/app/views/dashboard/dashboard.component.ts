@@ -7,6 +7,7 @@ import {CourseClass} from '../../interfaces/course-class';
 import * as moment from 'moment';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {User} from "../testautocomplete/testautocomplete.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -53,7 +54,8 @@ export class DashboardComponent implements OnInit {
     });
     this.filteredCourses = this.jsonControl.valueChanges.pipe(
       startWith(''),
-      map(value => this.dataFilter(value))
+      map(value => typeof value === 'string' ? value : value.name),
+      map(name => name ? this.dataFilter(name) : this.courses.slice()),
     );
     this.user = this.authService.getUser();
     console.log(this.user.role);
@@ -64,7 +66,7 @@ export class DashboardComponent implements OnInit {
     const newDate: moment.Moment = moment.utc(this.requestForm.value.start_at).local();
     this.requestForm.value.start_at = newDate.format('YYYY-MM-DD') + 'T' + this.requestForm.value.start_time;
     this.requestForm.value.end_at = moment(this.requestForm.value.start_at).add(this.hourValue, 'hours').format('YYYY-MM-DDTHH:mm');
-    this.tutorshipService.requestStudent(this.requestForm.value, this.user.id, 0).subscribe({
+    this.tutorshipService.requestStudent(this.requestForm.value, this.user.id, this.jsonControl.value.id).subscribe({
       error: (err) => console.log(err),
       next: rest => console.log(rest),
       complete: () => console.log('Complete')
@@ -83,9 +85,14 @@ export class DashboardComponent implements OnInit {
     const newCourses = [];
     this.courses.forEach(element => {
       if (element.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
-        newCourses.push({'name': element.name, 'description': element.description});
+        newCourses.push(element);
       }
     });
     return newCourses;
+  }
+
+  displayFn(course: CourseClass): string {
+    return course && course.name ? course.name : '';
+
   }
 }
