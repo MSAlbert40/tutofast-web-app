@@ -7,7 +7,6 @@ import {CourseClass} from '../../interfaces/course-class';
 import * as moment from 'moment';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {User} from "../testautocomplete/testautocomplete.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +21,6 @@ export class DashboardComponent implements OnInit {
   public jsonControl = new FormControl();
   public filteredCourses: Observable<any>;
 
-  public courseId = '';
   public hourValue = 0;
   public Role: string;
 
@@ -62,7 +60,7 @@ export class DashboardComponent implements OnInit {
     this.viewRole(this.user.role);
   }
 
-  newRequest(): void {
+  public newRequest(): void {
     const newDate: moment.Moment = moment.utc(this.requestForm.value.start_at).local();
     this.requestForm.value.start_at = newDate.format('YYYY-MM-DD') + 'T' + this.requestForm.value.start_time;
     this.requestForm.value.end_at = moment(this.requestForm.value.start_at).add(this.hourValue, 'hours').format('YYYY-MM-DDTHH:mm');
@@ -91,8 +89,7 @@ export class DashboardComponent implements OnInit {
     return newCourses;
   }
 
-  displayFn(course: CourseClass): string {
+  public displayFn(course: CourseClass): string {
     return course && course.name ? course.name : '';
-
   }
 }

@@ -19,15 +19,13 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {HeadersInterceptor} from './interceptor/headers.interceptor';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { TestautocompleteComponent } from './views/testautocomplete/testautocomplete.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    DashboardComponent,
-    TestautocompleteComponent
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

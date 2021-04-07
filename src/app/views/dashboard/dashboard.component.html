@@ -5,7 +5,7 @@
         <h2>{{Role}}</h2>
 
         <mat-form-field>
-          <input type="text" placeholder="Course" aria-label="Course" [formControl]="jsonControl" [matAutocomplete]="auto" matInput>
+          <input type="text" placeholder="Course" aria-label="Course" [formControl]="jsonControl" [matAutocomplete]="auto" matInput required>
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let course of filteredCourses | async" [value]="course">{{course.name}}</mat-option>
           </mat-autocomplete>
