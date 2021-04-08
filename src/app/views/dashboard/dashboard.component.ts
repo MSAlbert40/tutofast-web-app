@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {IAuthResponse} from '../../interfaces/auth/auth-response';
 import {AuthService} from '../../services/auth.service';
 import {TutorshipService} from '../../services/tutorship.service';
@@ -7,6 +7,11 @@ import {CourseClass} from '../../interfaces/course-class';
 import * as moment from 'moment';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {MessageResponsePage, Pageable} from '../../interfaces/message-response';
+import {TutorshipClass} from '../../interfaces/tutorship-class';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,14 +23,21 @@ export class DashboardComponent implements OnInit {
   private user: IAuthResponse;
 
   public courses: CourseClass[] = [];
-  public jsonControl = new FormControl();
   public filteredCourses: Observable<any>;
+  public jsonControl = new FormControl();
 
   public hourValue = 0;
   public Role: string;
 
+  public dataTutorship: MessageResponsePage<TutorshipClass[]>;
+  public newTutorshipPage = new MatTableDataSource();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   requestForm: FormGroup;
-  isEditMode: any;
+  isViewRole: boolean;
+  isViewTable: boolean;
+  displayedColumns: string[] = ['student', 'course', 'topic', 'startAt', 'status', 'apply'];
   hours = [
     {values: 2, viewValue: '2'},
     {values: 3, viewValue: '3'},
@@ -35,35 +47,32 @@ export class DashboardComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private tutorshipService: TutorshipService) {
     this.requestForm = this.formBuilder.group({
       topic: ['', [Validators.required, Validators.maxLength(150)]],
-      start_at: ['', [Validators.required]],
-      start_time: ['', [Validators.required]],
-      end_at: ['', [Validators.required]]
+      startAt: ['', [Validators.required]],
+      timeAt: ['', [Validators.required]],
+      endAt: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
-    this.tutorshipService.getCourses().subscribe({
-      error: (err) => console.log(err),
-      next: (rest) => {
-        this.courses = rest.data;
-        console.log(this.courses);
-      },
-      complete: () => console.log('Complete')
-    });
-    this.filteredCourses = this.jsonControl.valueChanges.pipe(
-      startWith(''),
-      map(value => typeof value === 'string' ? value : value.name),
-      map(name => name ? this.dataFilter(name) : this.courses.slice()),
-    );
     this.user = this.authService.getUser();
-    console.log(this.user.role);
+    this.viewCourse();
     this.viewRole(this.user.role);
+    console.log(this.user.role);
   }
 
-  public newRequest(): void {
-    const newDate: moment.Moment = moment.utc(this.requestForm.value.start_at).local();
-    this.requestForm.value.start_at = newDate.format('YYYY-MM-DD') + 'T' + this.requestForm.value.start_time;
-    this.requestForm.value.end_at = moment(this.requestForm.value.start_at).add(this.hourValue, 'hours').format('YYYY-MM-DDTHH:mm');
+  public onSubmit(): void {
+    if (this.isViewRole === true) {
+      this.newRequest();
+    } else{
+      this.searchRequest();
+      this.isViewTable = true;
+    }
+  }
+
+  private newRequest(): void {
+    const newDate: moment.Moment = moment.utc(this.requestForm.value.startAt).local();
+    this.requestForm.value.startAt = newDate.format('YYYY-MM-DD') + 'T' + this.requestForm.value.timeAt;
+    this.requestForm.value.endAt = moment(this.requestForm.value.startAt).add(this.hourValue, 'hours').format('YYYY-MM-DDTHH:mm');
     this.tutorshipService.requestStudent(this.requestForm.value, this.user.id, this.jsonControl.value.id).subscribe({
       error: (err) => console.log(err),
       next: rest => console.log(rest),
@@ -71,11 +80,43 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  private searchRequest(): void {
+    const newDate: moment.Moment = moment.utc(this.requestForm.value.startAt).local();
+    if (this.requestForm.value.startAt !== '') { this.requestForm.value.startAt = newDate.format('YYYY-MM-DD'); }
+    this.tutorshipService.viewRequest(0, 20, this.jsonControl.value, this.requestForm.value.startAt).subscribe({
+      error: (err) => console.log(err),
+      next: (rest) => {
+        this.dataTutorship = rest;
+        this.newTutorshipPage = new MatTableDataSource<TutorshipClass>(this.dataTutorship.data.content);
+        this.newTutorshipPage.paginator = this.paginator;
+        this.newTutorshipPage.sort = this.sort;
+      },
+      complete: () => console.log('Complete')
+    });
+  }
+
+  public viewCourse(): void {
+    // Service List Course
+    this.tutorshipService.getCourses().subscribe({
+      error: (err) => console.log(err),
+      next: (rest) => this.courses = rest.data,
+      complete: () => console.log('Complete')
+    });
+    this.filteredCourses = this.jsonControl.valueChanges.pipe(
+      startWith(''),
+      map(value => typeof value === 'string' ? value : value.name),
+      map(name => name ? this.dataFilter(name) : this.courses.slice()),
+    );
+  }
+
   private viewRole(user: string): void {
     if (user === 'ROLE_STUDENT'){
       this.Role = 'Student';
+      this.isViewRole = true;
+      this.isViewTable = false;
     } else {
       this.Role = 'Teacher';
+      this.isViewRole = false;
     }
   }
 
