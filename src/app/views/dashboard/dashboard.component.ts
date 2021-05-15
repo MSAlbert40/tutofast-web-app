@@ -12,6 +12,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MessageResponsePage, Pageable} from '../../interfaces/message-response';
 import {TutorshipClass} from '../../interfaces/tutorship-class';
 import {MatSort} from '@angular/material/sort';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,7 +45,7 @@ export class DashboardComponent implements OnInit {
     {values: 4, viewValue: '4'}
   ];
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private tutorshipService: TutorshipService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private tutorshipService: TutorshipService) {
     this.requestForm = this.formBuilder.group({
       topic: ['', [Validators.required, Validators.maxLength(150)]],
       startAt: ['', [Validators.required]],
@@ -56,6 +57,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.viewCourse();
+    this.viewRequest();
     this.viewRole(this.user.role);
     console.log(this.user.role);
   }
@@ -63,6 +65,7 @@ export class DashboardComponent implements OnInit {
   public onSubmit(): void {
     if (this.isViewRole === true) {
       this.newRequest();
+      this.isViewTable = true;
     } else{
       this.searchRequest();
       this.isViewTable = true;
@@ -76,6 +79,19 @@ export class DashboardComponent implements OnInit {
     this.tutorshipService.requestStudent(this.requestForm.value, this.user.id, this.jsonControl.value.id).subscribe({
       error: (err) => console.log(err),
       next: rest => console.log(rest),
+      complete: () => console.log('Complete')
+    });
+  }
+
+  private viewRequest(): void {
+    this.tutorshipService.viewTutorship(0, 20, this.user.id).subscribe({
+      error: (err) => console.log(err),
+      next: (rest) => {
+        this.dataTutorship = rest;
+        this.newTutorshipPage = new MatTableDataSource<TutorshipClass>(this.dataTutorship.data.content);
+        this.newTutorshipPage.paginator = this.paginator;
+        this.newTutorshipPage.sort = this.sort;
+      },
       complete: () => console.log('Complete')
     });
   }
@@ -132,5 +148,15 @@ export class DashboardComponent implements OnInit {
 
   public displayFn(course: CourseClass): string {
     return course && course.name ? course.name : '';
+  }
+
+  public tutorshipDetail(newTutorshipPage: TutorshipClass): void {
+    this.tutorshipService.setTutorship(newTutorshipPage);
+    this.router.navigateByUrl('/Tutorship');
+  }
+
+  public viewTeacher(newTutorshipPage: TutorshipClass): void {
+    this.tutorshipService.setTutorship(newTutorshipPage);
+    this.router.navigateByUrl('/Tutorship-Select');
   }
 }

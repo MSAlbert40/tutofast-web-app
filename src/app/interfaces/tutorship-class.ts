@@ -11,3 +11,10 @@ export interface TutorshipClass {
   teacher: UserClass;
   course: CourseClass;
 }
+
+export interface TutorshipRequest {
+  topic: string;
+  startAt: string;
+  timeAt: string;
+  endAt: string;
+}

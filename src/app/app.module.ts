@@ -8,6 +8,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import { LoginComponent } from './views/security/login/login.component';
 import { SignupComponent } from './views/security/signup/signup.component';
+import { TutorshipDetailComponent } from './views/tutorship/tutorship-detail/tutorship-detail.component';
+import { TutorshipSelectComponent } from './views/tutorship/tutorship-select/tutorship-select.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
@@ -22,13 +24,20 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {LayoutModule} from '@angular/cdk/layout';
+import {CdkTableModule} from '@angular/cdk/table';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    DashboardComponent
+    DashboardComponent,
+    TutorshipDetailComponent,
+    TutorshipSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +59,11 @@ import {MatSortModule} from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatGridListModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    LayoutModule,
+    CdkTableModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
