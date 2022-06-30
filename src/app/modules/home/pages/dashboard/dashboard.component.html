@@ -2,45 +2,147 @@
     <div class="d-flex" style="height: auto; margin-top: 1rem; gap: 40px;"> 
         <div class="d-flex flex-column m-card" style="width: 75%; padding: 2rem 3rem;">
             <div class="d-flex flex-column" style="margin: auto 0;">
-                <span style="font-family: 'CenturyGothic'; font-size: 1.3rem; font-weight: 600; line-height: .5em;"> Encuentre su tutoría </span>
-                <span style="color: #0E24DC; font-family: 'BebasNeue'; font-size: 4rem;"> IDEAL, SEGURO Y DE CONFIANZA </span>
+                <span *ngIf="userRole" style="font-family: 'CenturyGothic'; font-size: 1.3rem; font-weight: 600; line-height: .5em;"> Encuentre su tutoría </span>
+                <span *ngIf="!userRole" style="font-family: 'CenturyGothic'; font-size: 1.3rem; font-weight: 600; line-height: .5em;"> Encuentre su tutor </span>
+                
+                <span *ngIf="userRole" style="color: #0E24DC; font-family: 'BebasNeue'; font-size: 4rem;"> IDEAL, SEGURO Y DE CONFIANZA </span>
+                <span *ngIf="!userRole" style="color: #66FA02; font-family: 'BebasNeue'; font-size: 4rem;"> IDEAL, SEGURO Y DE CONFIANZA </span>
             </div>
         </div>
-        <div class="d-flex flex-column m-card" style="width: 25%; background-color: #0E24DC; color: white; margin-left: auto;">
+        <div *ngIf="userRole" class="d-flex flex-column m-card" style="width: 25%; background-color: #0E24DC; color: white; margin-left: auto;">
             <div class="d-flex flex-column" style="margin: auto;">
                 <span style="font-family: 'BebasNeue'; font-size: 5rem; text-align: center; line-height: 1em;">  250h </span>
                 <span style="font-family: 'BebasNeue'; font-size: 1.5rem; text-align: center; line-height: .7em;"> Horas Dictadas </span>
                 <span style="font-family: 'CenturyGothic'; font-size: .9rem; font-weight: 600; text-align: center;"> Una clase requiere de 2h </span> 
             </div>
         </div>
+
+        <div *ngIf="!userRole" class="d-flex flex-column m-card" style="width: 25%; background-color: #66FA02; color: white; margin-left: auto;">
+            <div class="d-flex flex-column" style="margin: auto;">
+                <span style="font-family: 'BebasNeue'; font-size: 5rem; text-align: center; line-height: 1em;">  250h </span>
+                <span style="font-family: 'BebasNeue'; font-size: 1.5rem; text-align: center; line-height: .7em;"> Saldo </span>
+                <span style="font-family: 'CenturyGothic'; font-size: .9rem; font-weight: 600; text-align: center;"> Una clase requiere de 2h </span> 
+            </div>
+        </div>
     </div>
 
-    <div class="d-flex m-card" style="height: 64px; margin-top: 2rem; padding: 1rem 1.5rem;"> 
+    <div *ngIf="userRole" class="d-flex m-card" style="height: 64px; margin-top: 2rem; padding: 1rem 1.5rem;" [formGroup]="teacherForm"> 
         <mat-form-field appearance="fill" style="width: 20%;">
             <mat-label>Hora de Inicio</mat-label>
-            <input type="text" matInput placeholder="Ex. 12:40">
+            <input type="text" matInput formControlName="start_at" placeholder="Ex. 12:40">
         </mat-form-field>
 
         <mat-form-field appearance="fill" style="width: 20%;">
             <mat-label>Hora de Fin</mat-label>
-            <input type="text" matInput placeholder="Ex. 13:50">
+            <input type="text" matInput formControlName="end_at" placeholder="Ex. 13:50">
         </mat-form-field>
 
         <mat-form-field appearance="fill" style="width: 20%;">
             <mat-label>Ubicación (Distrito)</mat-label>
-            <input type="text" matInput placeholder="Ex. Miraflores">
+            <input type="text" matInput formControlName="location" placeholder="Ex. Miraflores">
         </mat-form-field>
 
         <mat-form-field appearance="fill" style="width: 20%;">
             <mat-label>Nivel Educativo</mat-label>
-            <input type="text" matInput placeholder="Ex. 4° Primaria">
+            <input type="text" matInput formControlName="level" placeholder="Ex. 4° Primaria">
         </mat-form-field>
 
         <mat-form-field appearance="fill" style="width: 20%;">
             <mat-label>Grado Educativo</mat-label>
-            <input type="text" matInput placeholder="Ex. Secundaria">
+            <input type="text" matInput formControlName="education" placeholder="Ex. Secundaria">
         </mat-form-field>
         
-        <input type="submit" value="Buscar" class="act-button">
+        <input type="submit" value="Buscar" class="act-button" (click)="onSubmit()">
+    </div>
+
+    <div *ngIf="!userRole" class="d-flex m-card" style="height: 64px; margin-top: 2rem; padding: 1rem 1.5rem;" [formGroup]="studentForm"> 
+        <mat-form-field appearance="fill" style="width: 20%;">
+            <mat-label>Hora de Inicio</mat-label>
+            <input type="text" matInput formControlName="start_at" placeholder="Ex. 12:40">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 20%;">
+            <mat-label>Hora de Fin</mat-label>
+            <input type="text" matInput formControlName="end_at" placeholder="Ex. 13:50">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 20%;">
+            <mat-label>Tema</mat-label>
+            <input type="text" matInput formControlName="topic" placeholder="Ex. II Guerra Mundial">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 20%;">
+            <mat-label>Curso</mat-label>
+            <mat-select formControlName="courses">
+                <mat-option *ngFor="let courses of coursesItems" [value]="courses.id">{{ courses.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <input type="submit" value="Crear" class="act-button" style="background-color: #66FA02 !important;" (click)="onCreate()">
+    </div>
+
+    <div class="d-flex flex-column m-card" style="height: auto; margin-top: 2rem; padding: 1rem 1.5rem;">
+        <table mat-table [dataSource]="datasource" style="width: 100%;">
+        
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> ID </th>
+              <td mat-cell *matCellDef="let element"> 
+                <div style="width: 1.5rem; height: 1.5rem; background-color: #12CCFD; border-radius: 50%"></div>
+              </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="student">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Estudiante </th>
+              <td mat-cell *matCellDef="let element"> {{ element.studentModel.name + ' ' + element.studentModel.lastName }} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="start_at">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Hora Inicio </th>
+              <td mat-cell *matCellDef="let element"> {{ element.start_at | date:'hh:mm:ss a' }} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="end_at">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Hora Fin </th>
+              <td mat-cell *matCellDef="let element"> {{ element.end_at | date:'hh:mm:ss a' }} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="topic">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Tema </th>
+              <td mat-cell *matCellDef="let element"> {{ element.topic }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="courses">
+                <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Curso </th>
+                <td mat-cell *matCellDef="let element"> {{ element.courseModel.name }} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Estado </th>
+              <td mat-cell *matCellDef="let element">  
+                <div *ngIf="element.status != 'OPEN'">
+                    <div>Cerrado</div>
+                </div>
+                <div *ngIf="element.status == 'OPEN'">
+                    <div>Abierto</div>
+                </div>
+              </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="options">
+              <th mat-header-cell *matHeaderCellDef style="font-weight: 800; font-size: .85rem;"> Opciones </th>
+              <td mat-cell *matCellDef="let element">  
+                <div class="d-flex">
+                    <span class="iconify" style="color: #12CCFD; cursor: pointer;" data-icon="ant-design:eye-outlined" data-width="30" data-height="30"></span>
+                    <div style="margin: auto 0" (click)="onApply(element.id)">
+                        <span class="iconify" style="color: #12CCFD; cursor: pointer; margin-left: .5rem;" data-icon="akar-icons:circle-check" data-width="25" data-height="25"></span>
+                    </div>
+                </div>
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 15, 20]" [length]="sessionsLength" showFirstLastButtons></mat-paginator>
     </div>
 </div>

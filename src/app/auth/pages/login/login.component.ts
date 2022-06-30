@@ -14,16 +14,14 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, 
-  private formBuilder: FormBuilder, private route: ActivatedRoute) { 
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { 
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     })
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   onSubmit() {
     if(this.loginForm.invalid) {
@@ -36,9 +34,25 @@ export class LoginComponent implements OnInit {
       });
       return;
     } else {
-      this.authService.login(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value);
-      this.router.navigate(['/inicio']);
-      console.log(this.loginForm)
+      Swal.fire({
+        title: '¡Por favor espere!',
+        text: 'Cargando',
+        icon: 'info',
+        allowOutsideClick: false,
+      });
+      Swal.showLoading();
+      setTimeout(() => {
+        this.authService.login(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value).subscribe(result => {
+          Swal.fire({
+            text: 'Bienvenido a TutoFast',
+            icon: 'success',
+            confirmButtonText: "Aceptar",
+            allowOutsideClick: false
+          }).then(() => this.router.navigate(['/inicio']));
+        });
+      }, 1700);
+      // this.router.navigate(['/inicio']);
+      // console.log(this.loginForm)
     }
   }
 

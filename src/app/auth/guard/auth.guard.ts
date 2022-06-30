@@ -11,6 +11,10 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const user = localStorage.getItem('userAuth');
     if(user) return true;
-    else { this.router.navigateByUrl('/auth/login'); return false }
+    else { 
+      this.router.navigateByUrl('/auth/login');
+      window.location.reload();
+      return false 
+    }
   }
 }

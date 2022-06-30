@@ -12,16 +12,13 @@ export class AuthService {
 
   login(username: string, password: string) {
     const params = { username: username, password: password };
-    localStorage.setItem('userAuth', JSON.stringify(params));
-
-    // return this.http.post<any>(environment.apiUrl + 'login/Authentication', params).pipe(
-    //   map((response) => {
-    //     if(response['message']['status'] != 0) {
-    //       localStorage.setItem('userAuth', JSON.stringify(response));
-    //     } return response;
-    //   }),
-    //   catchError((error) => { return throwError(error) })
-    // )
+    return this.http.post<any>(environment.apiUserUrl + 'users/login', params).pipe(
+      map((response) => { 
+        localStorage.setItem('userAuth', JSON.stringify(response));
+        return response;
+      }),
+      catchError((error) => { return throwError(error) })
+    )
   }
 
   logout() {
