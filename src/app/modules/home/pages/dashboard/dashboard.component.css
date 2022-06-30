@@ -1,0 +1,46 @@
+.m-card {
+    width: auto; 
+    height: auto;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.act-button {
+    width: 120px; 
+    height: 35px; 
+    border: none;
+    color: white; 
+    margin-left: auto;
+    border-radius: 12px; 
+    background-color: #0E24DC; 
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: white !important;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 4px 4px 0 0;
+    padding: 0 !important;
+}
+
+.mat-input-element {
+    caret-color: #12CCFD !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: #12CCFD !important;
+}
+
+.mat-form-field {
+    font-weight: 800 !important;
+    font-family: 'CenturyGothic' !important;
+}
+
+.mat-form-field-label-wrapper {
+    top: -0.84375em !important;
+}
+
+.mat-form-field-underline {
+    display: none;
+}

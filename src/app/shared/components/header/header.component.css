@@ -1,0 +1,73 @@
+.main-screen {
+    height: 5rem; 
+    padding: .5rem 1.5rem; 
+}
+
+.d-page {
+    height: calc(100% - 5rem);
+}
+
+.d-logo {
+    width: 10rem;
+    margin: auto 0;
+}
+
+.d-logo-min {
+    display: none;
+}
+
+.d-profiles {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgb(27 27 27 / 15%);
+}
+
+.d-close {
+    padding: .4rem .6rem;
+    margin: auto 0; 
+    cursor: pointer;
+    margin-left: .9rem; 
+    border-radius: 6px;
+    border: .5px solid rgb(27 27 27 / 5%);
+    box-shadow: 0 4px 16px rgb(27 27 27 / 10%);
+}
+
+.d-close:hover {
+    background: #A6A8AA;
+}
+
+.d-close:hover svg {
+    color: #FFF;
+}
+
+/*Device: Tablet (1025px)*/
+@media screen and (max-width: 1025px /*991*/) { 
+    .main-screen {
+        padding: .5rem 1.5rem; 
+    }
+    
+}
+
+/*Device: Mobile (600px)*/
+@media screen and (max-width: 600px) {
+    .main-screen {
+        height: 6rem; 
+        padding: .5rem 1.8rem; 
+    }
+    
+    .d-page {
+        height: calc(100% - 6rem);
+    }
+    
+    .d-logo {
+        display: none;
+    }
+
+    .d-logo-min {
+        width: 2.6rem;
+        display: block;
+        margin: auto 0;
+    }
+}

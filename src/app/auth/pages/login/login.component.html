@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="d-flex w-100 main-screen main-background">
+    <div class="d-panel h-100">
+        <div class="d-flex flex-column" style="margin-top: auto;">
+            <span class="m-subtitle"> Bienvenido a </span>
+            <span class="m-title"> TUTOFAST </span>
+        </div>
+    </div>
+    <div class="d-flex d-log h-100">
+        <div class="d-profile d-flex">
+            <img src="../../../../assets/img/profile-example.jpg" style="width: 9rem; height: 9rem; border-radius: 50%; margin: auto; object-fit: cover;">
+        </div>
+        <div class="d-login" style="padding: 1rem 3rem;" [formGroup]="loginForm">
+            <div class="d-flex flex-column" style="margin-top: 6rem; text-align: center;">
+                <span class="d-span"> ¿No tienes una cuenta? <a style="color: #12CCFD; font-weight: 900; cursor: pointer;">Crea tu cuenta</a>, lleva menos de un minuto </span>
+
+                <mat-form-field appearance="fill" style="width: 100%; margin: 0 auto; margin-top: 2.5rem;">
+                    <mat-label>Email/Username</mat-label>
+                    <input type="text" matInput formControlName="username" placeholder="Ex. msalbert">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" style="width: 100%; margin: 0 auto; margin-top: 1rem;">
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput formControlName="password">
+                </mat-form-field>
+
+                <span class="d-span" style="margin-left: auto; margin-top: .2rem; cursor: pointer;"> ¿Olvidaste tu contraseña? </span>
+
+                <button mat-raised-button style="margin-top: 2rem; background-color: #0E24DC; color: white;" (click)="onSubmit()">Ingresar</button>
+            </div>
+        </div>
+    </div>
+</div>

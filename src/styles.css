@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+    font-family: BebasNeue;
+    src: url('assets/fonts/BebasNeue.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: CenturyGothic;
+    src: url('assets/fonts/CenturyGothic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: AudacityScript;
+    src: url('assets/fonts/AudacityScript.ttf') format('truetype');
+}
+
+html{ height: 100%; }
+body { margin: 0; font-family: Roboto, "CenturyGothic", sans-serif; font-weight: 500; }

@@ -1,0 +1,22 @@
+<div style="overflow: auto; height: 100vh; background-color: #F5F6FA;">
+    <div class="d-flex w-100 main-screen">
+        <div style="margin: auto 0; cursor: pointer;">
+            <span class="iconify" style="margin: auto;" data-icon="eva:menu-fill" data-width="30" data-height="30"></span>
+        </div>
+
+        <div class="d-flex" style="margin: auto 0 auto auto;"> 
+            <img src="../../../../assets/img/profile-example.jpg" class="d-profiles">
+            <div class="d-flex flex-column" style="margin: auto 0; margin-left: .9rem;">
+                <span style="font-weight: 600; line-height: 1.3em; font-family: 'BebasNeue'; font-size: 1.2rem;"> {{ userName }} </span>
+                <p style="font-weight: 600; font-size: .85rem; line-height: 1.2em; margin-bottom: 0 !important; font-family: 'CenturyGothic';"> {{ userRole }} </p>
+            </div>
+            <div class="d-close" (click)="logOut()">
+                <span class="iconify" data-icon="charm:power" data-width="18" data-height="18"></span>
+            </div>
+       </div> 
+    </div>
+    
+    <div class="w-100 d-page">
+        <router-outlet></router-outlet>
+    </div>
+</div>

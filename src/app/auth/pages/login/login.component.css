@@ -1,0 +1,139 @@
+.main-screen {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.d-panel {
+    width: 60%; 
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+}
+
+.d-log {
+    width: 40%; 
+    overflow: hidden; 
+    position: relative;
+}
+
+.main-background {
+    background-image: url('../../../../assets/img/main-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.m-title {
+    color: white;
+    font-size: 13rem;
+    line-height: .7em;
+    font-family: 'BebasNeue';
+}
+
+.m-subtitle {
+    color: white;
+    font-size: 5rem;
+    font-family: 'AudacityScript';
+}
+
+.d-column {
+    grid-template-rows: 90% 10%;
+}
+
+.d-profile {
+    top: 8%;
+    left: 0; 
+    right: 0; 
+    width: 10rem; 
+    height: 10rem;
+    margin-left: auto; 
+    margin-right: auto; 
+    background: white; 
+    border-radius: 50%;
+    position: absolute;
+}
+
+.d-login {
+    width: 70%;
+    height: 480px;
+    margin: auto;
+    border-radius: 30px;
+    background-color: white;
+}
+
+.d-span {
+    font-size: .9rem;
+    line-height: 1em !important;
+    font-family: 'CenturyGothic';
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: white !important;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 4px 4px 0 0;
+    padding: 0 !important;
+}
+
+.mat-input-element {
+    caret-color: #12CCFD !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: #12CCFD !important;
+}
+
+.mat-form-field {
+    font-weight: 800 !important;
+    font-family: 'CenturyGothic' !important;
+}
+
+.mat-form-field-label-wrapper {
+    top: -0.84375em !important;
+}
+
+/*Device: Tablet (1025px)*/
+@media screen and (max-width: 1025px /*991*/) {
+    .d-panel {
+        width: 50%; 
+    }
+
+    .m-title {
+        font-size: 10rem;
+    }
+    
+    .m-subtitle {
+        font-size: 3rem;
+    }
+ 
+    .d-log {
+        width: 50%; 
+    }
+
+    .d-profile {
+        top: 5%;
+    }
+}
+
+/*Device: Mobile (600px)*/
+@media screen and (max-width: 600px) {
+    .d-panel {
+        display: none;
+    }
+
+    .d-log {
+        width: 100%; 
+        overflow: hidden; 
+        position: relative;
+    }
+
+    .d-profile {
+        top: 5%;
+    }
+
+    .d-login {
+        width: 80%;
+    }
+}
